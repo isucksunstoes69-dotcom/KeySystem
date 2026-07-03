@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reseller Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-view">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="logo.png" alt="logo" onerror="this.style.display='none'" />
+        <span>Reseller Panel</span>
+      </div>
+      <p class="login-sub">Enter your API key to manage your products</p>
+      <label class="field-label" for="apiKey">API key</label>
+      <input id="apiKey" type="password" placeholder="rk_..." autocomplete="off" />
+      <button class="btn-primary" id="loginBtn">Enter Panel</button>
+      <div class="login-err" id="loginErr"></div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel-view" class="app hidden">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="logo" onerror="this.style.display='none'" />
+        <span class="logo-text">Reseller</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span class="nav-label">Overview</span></a>
+        <a class="nav-item" id="navUpload"><span class="nav-icon"><i data-lucide="upload"></i></span><span class="nav-label">Upload jar</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <a class="nav-item" id="navLogout"><span class="nav-icon"><i data-lucide="log-out"></i></span><span class="nav-label">Log out</span></a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Reseller Panel</h1>
+          <div class="sub" id="whoami">…</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="refreshBtn"><i data-lucide="refresh-cw"></i> Refresh</button>
+          <button class="icon-btn" id="uploadBtn"><i data-lucide="upload"></i> Upload jar</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-ico"><i data-lucide="key-round"></i></div><div class="num" id="stTotal">0</div><div class="lbl">Licenses issued</div></div>
+        <div class="stat a"><div class="stat-ico"><i data-lucide="badge-check"></i></div><div class="num" id="stActive">0</div><div class="lbl">Active</div></div>
+        <div class="stat"><div class="stat-ico"><i data-lucide="package"></i></div><div class="num" id="stProducts">0</div><div class="lbl">Products</div></div>
+        <div class="stat r"><div class="stat-ico"><i data-lucide="ban"></i></div><div class="num" id="stRevoked">0</div><div class="lbl">Revoked</div></div>
+      </div>
+
+      <!-- Integration card -->
+      <div class="lcard" style="margin-bottom:22px">
+        <div class="lcard-top"><div class="lcard-product">Your download API</div><span class="badge unbound">idempotent per customer</span></div>
+        <p style="color:var(--text-mid);font-size:.85rem;margin-bottom:12px">Point your store/downloader here. Each customer gets a jar with their own key baked in; the same customer always gets the same key.</p>
+        <div class="keyrow"><code id="apiKeyShow">rk_…</code><button class="mini" id="copyApiKey" title="Copy API key"><i data-lucide="copy"></i></button></div>
+        <label class="field-label">Example (replace SERVER + ORDER_ID)</label>
+        <div class="keyrow"><code id="snippet" style="white-space:normal"></code><button class="mini" id="copySnippet" title="Copy snippet"><i data-lucide="copy"></i></button></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search"><i data-lucide="search"></i><input id="searchInput" placeholder="Search customer, product, key…" /></div>
+      </div>
+
+      <ul class="card-grid" id="grid"></ul>
+      <div class="empty hidden" id="emptyState">No licenses issued yet. Wire your downloader to the API above.</div>
+    </main>
+  </div>
+
+  <!-- UPLOAD MODAL -->
+  <div class="modal-backdrop hidden" id="modal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose"><i data-lucide="x"></i></button>
+      <h2>Upload product jar</h2>
+      <p class="modal-sub">The key gets baked into a copy of this jar on each download. Re-upload to ship an update.</p>
+      <div class="row">
+        <label class="field-label">Product name (letters, numbers, . _ -)</label>
+        <input id="upProduct" placeholder="MyMod" />
+      </div>
+      <div class="row">
+        <label class="field-label">Jar file</label>
+        <input id="upFile" type="file" accept=".jar,application/java-archive" />
+      </div>
+      <button class="btn-primary" id="doUpload">Upload</button>
+      <div class="login-err" id="upErr"></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="reseller.js"></script>
+</body>
+</html>

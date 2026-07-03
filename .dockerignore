@@ -1,0 +1,19 @@
+# build output (recompiled in the image)
+out/
+dbtmp/
+
+# local data + secrets - never bake these into the image
+data/
+downloads/
+server/privatekey.txt
+server/publickey.txt
+*.db
+*.db-wal
+*.db-shm
+*.properties
+*.log
+
+# local/editor/vcs
+.git/
+.claude/
+fabric-integration/

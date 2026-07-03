@@ -1,0 +1,16 @@
+// Merge these "entrypoints" into your existing fabric.mod.json.
+// Use "client" for a client mod, "server" for a dedicated-server mod, or both.
+{
+  "entrypoints": {
+    "client": [
+      "com.example.mymod.ExampleClientInit"
+    ],
+    "server": [
+      "com.example.mymod.ExampleServerInit"
+    ]
+  }
+}
+
+// No extra dependencies are needed - the license client uses only the JDK
+// (java.net.http + Ed25519), both already present in Minecraft's Java 17/21
+// runtime. Nothing to shade.

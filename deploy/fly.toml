@@ -1,0 +1,30 @@
+# Example Fly.io config. Copy to the project root as fly.toml, edit the app name
+# + region + LICENSE_PUBLIC_URL, then:  fly launch --no-deploy  &&  fly deploy
+#
+# Set secrets (NOT in this file):
+#   fly secrets set LICENSE_ADMIN_TOKEN=... LICENSE_PRIVATE_KEY=... LICENSE_PUBLIC_KEY=...
+# Create the volume once:
+#   fly volumes create license_data --size 1
+
+app = "my-license-server"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  LICENSE_PORT = "8080"
+  LICENSE_DB = "/data/license.db"
+  LICENSE_DOWNLOADS_DIR = "/data/downloads"
+  # must be the PUBLIC url customers' mods call back to:
+  LICENSE_PUBLIC_URL = "https://my-license-server.fly.dev"
+
+[[mounts]]
+  source = "license_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false   # keep it always-on (stateful)
+  min_machines_running = 1
